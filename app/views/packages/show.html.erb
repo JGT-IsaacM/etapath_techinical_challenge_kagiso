@@ -1,0 +1,29 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Reference number:</strong>
+  <%= @package.reference_number %>
+</p>
+
+<p>
+  <strong>Location:</strong>
+  <%= @package.location %>
+</p>
+
+<p>
+  <strong>Destination:</strong>
+  <%= @package.destination %>
+</p>
+
+<p>
+  <strong>Date:</strong>
+  <%= @package.date %>
+</p>
+
+<p>
+  <strong>Timeslot:</strong>
+  <%= @package.timeslot %>
+</p>
+
+<%= link_to 'Edit', edit_package_path(@package) %> |
+<%= link_to 'Back', packages_path %>

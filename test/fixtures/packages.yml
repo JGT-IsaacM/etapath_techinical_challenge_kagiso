@@ -1,0 +1,15 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  reference_number: MyString
+  location: MyString
+  destination: MyString
+  date: 2021-05-19
+  timeslot: 2021-05-19 20:42:33
+
+two:
+  reference_number: MyString
+  location: MyString
+  destination: MyString
+  date: 2021-05-19
+  timeslot: 2021-05-19 20:42:33
