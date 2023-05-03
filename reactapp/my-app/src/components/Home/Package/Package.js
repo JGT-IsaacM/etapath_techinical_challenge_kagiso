@@ -68,7 +68,7 @@ export default class Package extends React.Component{
               }}>
               <button>Edit</button>
             </Link>
-            <Link to = "#">
+            <Link to = "/">
               <button onClick = {this.onDelete}>Delete</button>
             </Link>
           </div>
