@@ -1,5 +1,7 @@
 import React from 'react';
-import axios from 'axios'
+import axios from 'axios';
+import { sanitizeCheck } from '../../utility';
+import CancelButton from '../App/CancelButton';
 import './CreatePackage.css'
 
 export default class CreatePackage extends React.Component{
@@ -11,9 +13,9 @@ export default class CreatePackage extends React.Component{
         location_name: "maseru",
         destination_name: "mazowe",
         distance: 1000,
-        timeslot: "",
-        date: "",
-        reference: 1000
+        timeslot: "13:15",
+        date: "2021-06-01",
+        reference: 18787382
         }
     }
 
@@ -50,29 +52,29 @@ export default class CreatePackage extends React.Component{
     }
 
     createUserPackage = async()=> {
-
-        await axios.post(
-            'http://localhost:3000/api/v1/packages',
-            {
-                location_name: this.state.location_name,
-                destination_name: this.state.destination_name,
-                distance: this.state.distance,
-                timeslot:this.state.timeslot,
-                date: this.state.date,
-                reference: this.state.reference
-            },
-            {
-                headers: {
-                  'Authorization': `${this.props.token}` 
+        try {
+            await axios.post(
+                'http://localhost:3000/api/v1/packages',
+                {
+                    location: sanitizeCheck(this.state.location_name),
+                    destination: sanitizeCheck(this.state.destination_name),
+                    distance: this.state.distance,
+                    timeslot:sanitizeCheck(this.state.timeslot),
+                    date: sanitizeCheck(this.state.date),
+                    reference_number: this.state.reference
+                },
+                {
+                    headers: {
+                      'Authorization': `${this.props.token}` 
+                    }
                 }
-            }
-        )
-        .then(response => {
-            console.log(response.data);
-        })
-        .catch(error =>{
-            console.log("error creating package");
-        })
+            );
+            window.history.back();
+
+        } catch (error) {
+            alert("Failed to create user. Please try agin.");
+            console.log(error.message);
+        }
     }
 
 
@@ -117,7 +119,6 @@ export default class CreatePackage extends React.Component{
                 <input 
                     type="time"
                     onChange = {e=>this.timeChanged(e.target.value)} 
-                    //placeholder = {"Enter time"}
                     value = {this.state.timeslot}
                 />
             </label>
@@ -141,16 +142,8 @@ export default class CreatePackage extends React.Component{
                     value = {this.state.reference}
                 />
             </label>
-            <div>
-                <button 
-                    type="submit"
-                >Save Package</button>
-            </div>
-            <div>
-                <button 
-                    type="submit"
-                >Cancel</button>
-            </div>
+            <button type="submit">Save Package</button>
+            <CancelButton />
         </form>
       </div>
     );
