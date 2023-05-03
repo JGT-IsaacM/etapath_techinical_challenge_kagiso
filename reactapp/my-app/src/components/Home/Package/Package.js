@@ -1,21 +1,25 @@
 import React from 'react';
-import axios from 'axios'
-import { Link } from 'react-router-dom';
+import axios from 'axios';
+import { Link, } from 'react-router-dom';
 import './Package.css'
 
 export default class Package extends React.Component{
 
-  constructor()
-  {
-    super();
-  }
-
-  onEdit = () =>{
-
-  }
-
-  onDelete = () =>{
-
+  onDelete = async () =>{   
+    try {
+      await axios.delete(
+        'http://localhost:3000/api/v1/packages',
+        {
+          data: {...this.props},
+          headers: {
+            'Authorization': `${this.props.token}` 
+          }
+        }
+      );
+    } catch (error) {
+      alert('Failed to delete package! Please try again.');
+      console.log(error.message);
+    }    
   }
 
   render()
@@ -32,7 +36,7 @@ export default class Package extends React.Component{
             <input type = "text" disabled = {true} value = {this.props.destination_name}/>
           </div>
           <div className = "package-entry">
-            <label> Distance:    </label>
+            <label>Distance:    </label>
             <input type = "text" disabled = {true} value = {this.props.distance}/>
           </div>
           <div className = "package-entry">
@@ -40,7 +44,7 @@ export default class Package extends React.Component{
             <input type = "time" disabled = {true} value = {this.props.timeslot}/>
           </div>
           <div className = "package-entry">
-            <label> Date:    </label>
+            <label>Date:    </label>
             <input type = "date" disabled = {true} value = {this.props.date}/>
           </div>
           <div className = "package-entry">
@@ -52,6 +56,7 @@ export default class Package extends React.Component{
                 pathname:"/editPackage",
                 state: {
                   data:{
+                    id: this.props.id,
                     location_name: this.props.location_name,
                     destination_name: this.props.destination_name,
                     distance: this.props.distance,
@@ -61,9 +66,11 @@ export default class Package extends React.Component{
                   }
                 }
               }}>
-              <button onClick = {this.onEdit}>Edit</button>
+              <button>Edit</button>
             </Link>
-            <button onClick = {this.onDelete}>Delete</button>
+            <Link to = "#">
+              <button onClick = {this.onDelete}>Delete</button>
+            </Link>
           </div>
         </div>
       </>
