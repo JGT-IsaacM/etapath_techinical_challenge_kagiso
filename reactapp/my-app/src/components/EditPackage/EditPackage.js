@@ -1,7 +1,9 @@
 import React, {useState,useEffect} from 'react';
 import axios from 'axios'
 import './EditPackage.css'
-import { Link, useLocation } from 'react-router-dom';
+import {sanitizeCheck} from '../../utility';
+import { useLocation, useHistory } from 'react-router-dom';
+import CancelButton from '../App/CancelButton';
 
 export default function EditPackage ({token})
 {
@@ -11,11 +13,9 @@ export default function EditPackage ({token})
     const [timeslot, setTimeslot] = useState();
     const [date, setDate] = useState();
     const [reference, setReference] = useState();
-
+    const history = useHistory();
     const location = useLocation();
     const {data} = location.state;
-    //console.log(JSON.stringify(data))
-
 
     useEffect(()=>{
 
@@ -33,7 +33,7 @@ export default function EditPackage ({token})
         setTimeslot(timeslot);
         setDate(date);
         setReference(reference);
-    })
+    },[])
 
 
     
@@ -70,29 +70,29 @@ export default function EditPackage ({token})
     }
 
     const editUserPackage = async()=> {
-
-        await axios.put(
-            'http://localhost:3000/api/v1/packages',
-            {
-                location_name,
-                destination_name,
-                distance,
-                timeslot,
-                date,
-                reference
-            },
-            {
-                headers: {
-                  'Authorization': `${token}` 
+        try {
+            await axios.put(
+                'http://localhost:3000/api/v1/packages',
+                {
+                    "id": data.id,
+                    "location": sanitizeCheck(location_name),
+                    "destination": sanitizeCheck(destination_name),
+                    distance,
+                    timeslot: sanitizeCheck(timeslot),
+                    date: sanitizeCheck(date),
+                    "reference_number": reference
+                },
+                {
+                    headers: {
+                      'Authorization': `${token}` 
+                    }
                 }
-            }
-        )
-        .then(response => {
-            console.log(response.data);
-        })
-        .catch(error =>{
-            console.log("error editing package");
-        })
+            );
+            history.goBack();
+        } catch (error) {
+            alert('Failed to edit package! Please try again.');
+            console.log(error.message);
+        }
     }
 
     return(
@@ -105,7 +105,7 @@ export default function EditPackage ({token})
                     type="text" 
                     onChange = {e=>locationChanged(e.target.value)}
                     placeholder = {"Enter location"}
-                    value = {location_name}
+                    defaultValue = {location_name}
                 />
             </label>
             <label>
@@ -114,7 +114,7 @@ export default function EditPackage ({token})
                     type="text"
                     onChange = {e=>destinationChanged(e.target.value)} 
                     placeholder = {"Enter destination"}
-                    value = {destination_name}
+                    defaultValue = {destination_name}
                 />
             </label>
 
@@ -124,7 +124,7 @@ export default function EditPackage ({token})
                     type="number"
                     onChange = {e=>distanceChanged(e.target.value)} 
                     placeholder = {"Enter distance"}
-                    value = {distance}
+                    defaultValue = {distance}
                 />
             </label>
 
@@ -133,8 +133,7 @@ export default function EditPackage ({token})
                 <input 
                     type="time"
                     onChange = {e=>timeChanged(e.target.value)} 
-                    //placeholder = {"Enter time"}
-                    value = {timeslot}
+                    defaultValue = {timeslot}
                 />
             </label>
 
@@ -144,7 +143,7 @@ export default function EditPackage ({token})
                     type="date"
                     onChange = {e=>dateChanged(e.target.value)} 
                     placeholder = {"Enter date"}
-                    value = {date}
+                    defaultValue = {date}
                 />
             </label>
 
@@ -154,18 +153,14 @@ export default function EditPackage ({token})
                     type="number"
                     onChange = {e=>referenceChanged(e.target.value)} 
                     placeholder = {"Enter Reference"}
-                    value = {reference}
+                    defaultValue = {reference}
                 />
             </label>
             <div>
-                <button 
-                    type="submit"
-                >Save Package</button>
+                <button type="submit">Save Package</button>
             </div>
             <div>
-                <Link to = "./home">
-                    <button>Cancel</button>
-                </Link>
+                <CancelButton/>
             </div>
         </form>
       </div>
