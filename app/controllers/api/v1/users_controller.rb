@@ -11,7 +11,7 @@ class Api::V1::UsersController < ApplicationController
             render json: @user, status: :created
         
         @user = User.new(user_params)
-        puts @user.inspect
+        
         if @user.save
             render json: @user, status: :created
         else
