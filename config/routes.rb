@@ -15,6 +15,7 @@ Rails.application.routes.draw do
       get '/packages', to: "packages#index"
       post '/packages', to: "packages#create"
       put '/packages', to: 'packages#update'
+      delete '/packages', to: "packages#destroy"
     end
   end
     # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
