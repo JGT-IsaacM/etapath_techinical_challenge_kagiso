@@ -14,15 +14,12 @@ describe('Testing login screen',()=>{
 
             const emailInput = getByPlaceholderText('Enter email');
             const passwordInput = getByPlaceholderText('Enter password');
-            const confirmPasswordInput = getByPlaceholderText('Re-type password');
 
             fireEvent.change(emailInput, { target: { value: 'johndoe' } });
             fireEvent.change(passwordInput, { target: { value: 'secret' } });
-            fireEvent.change(confirmPasswordInput, { target: { value: 'secret' } });
 
             expect(emailInput.value).toBe('johndoe');
             expect(passwordInput.value).toBe('secret');
-            expect(confirmPasswordInput.value).toBe('secret');
         });
     });
 

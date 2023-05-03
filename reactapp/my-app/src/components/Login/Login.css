@@ -3,3 +3,31 @@
     flex-direction: column;
     align-items: center;
 }
+
+.login-wrapper div {
+    margin-top: 10px;
+}
+
+.signin-options{
+    margin-top: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;   
+}
+
+.signin-options h1, h2{
+    margin-block: 5px;
+}
+
+.signin-options div{
+    display: flex;
+    flex-direction: row;
+    /* align-items: center;    */
+    justify-content: space-between;
+}
+
+.signin-options div button{
+    margin: 5px;
+    padding: 5px;
+}
