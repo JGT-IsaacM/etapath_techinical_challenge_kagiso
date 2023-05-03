@@ -30,7 +30,7 @@ class Api::V1::PackagesController < ApplicationController
 
   # POST /packages or /packages.json
   def create
-    @package = current_user.packages.build(package_params)
+    @package = @current_user.packages.build(package_params)
 
     if @package.save
       render json: @package
