@@ -19,15 +19,6 @@ class Api::V1::PackagesController < ApplicationController
   def show
   end
 
-  # GET /packages/new
-  #def new
-  #  @package = current_user.packages.build
-  #end
-
-  # GET /packages/1/edit
-  #def edit
-  #end
-
   # POST /packages or /packages.json
   def create
     @package = @current_user.packages.build(package_params)
@@ -37,28 +28,10 @@ class Api::V1::PackagesController < ApplicationController
     else
       render json: @package.errors
     end
-    #respond_to do |format|
-    #  if @package.save
-        #format.html { redirect_to @package, notice: "Package was successfully created." }
-    #    format.json { render :show, status: :created, location: @package }
-    #  else
-    #    format.html { render :new, status: :unprocessable_entity }
-    #    format.json { render json: @package.errors, status: :unprocessable_entity }
-    #  end
-    #end
   end
 
   # PATCH/PUT /packages/1 or /packages/1.json
   def update
-    #respond_to do |format|
-    #  if @package.update(package_params)
-    #    format.html { redirect_to @package, notice: "Package was successfully updated." }
-    #    format.json { render :show, status: :ok, location: @package }
-    #  else
-    #    format.html { render :edit, status: :unprocessable_entity }
-    #    format.json { render json: @package.errors, status: :unprocessable_entity }
-    #  end
-    #end
     if @package.update(package_params)
       render json: @package
     else
