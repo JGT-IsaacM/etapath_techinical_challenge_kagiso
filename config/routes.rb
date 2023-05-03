@@ -12,6 +12,7 @@ Rails.application.routes.draw do
       post '/sessions', to: 'sessions#create'
       delete '/sessions', to: 'sessions#destroy'
 
+      get '/packages', to: "packages#index"
       post '/packages', to: "packages#create"
       put '/packages', to: 'packages#update'
     end
