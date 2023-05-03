@@ -3,8 +3,12 @@ Rails.application.routes.draw do
     namespace :v1 do
       #post 'user_token' => 'user_token#create'
       #devise_for :users
+      resources :users
       resources :packages
       resources :sessions, only: [:create,:destroy]
+      post '/profile', to: 'users#create'
+      delete '/profile', to: "users#destroy"
+
       post '/sessions', to: 'sessions#create'
       post '/packages', to: "packages#create"
       put '/packages', to: 'packages#update'
