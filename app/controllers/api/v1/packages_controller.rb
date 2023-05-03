@@ -1,10 +1,17 @@
+require 'knock'
+
 class Api::V1::PackagesController < ApplicationController
-  before_action :authenticate_api_v1_user!
+  
+  include Knock::Authenticable
+
+  before_action :authenticate_user
   before_action :set_package, only: %i[ show edit update destroy ]
+  skip_before_action :verify_authenticity_token
 
   # GET /packages or /packages.json
   def index
-    @packages = Package.all
+    user = User.find_by_authentication_token(request.headers['Authorization'])
+    @packages = Package.where(user_id: user.id);
     render json: @packages
   end
 
