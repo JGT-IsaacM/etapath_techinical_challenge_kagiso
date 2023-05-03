@@ -5,13 +5,13 @@ class Api::V1::PackagesController < ApplicationController
   include Knock::Authenticable
 
   before_action :authenticate_user
+  before_action :set_current_user
   before_action :set_package, only: %i[ show edit update destroy ]
   skip_before_action :verify_authenticity_token
 
   # GET /packages or /packages.json
   def index
-    user = User.find_by_authentication_token(request.headers['Authorization'])
-    @packages = Package.where(user_id: user.id);
+    @packages = Package.where(user_id: @current_user.id);
     render json: @packages
   end
 
@@ -55,6 +55,14 @@ class Api::V1::PackagesController < ApplicationController
       @package = Package.find(params[:id])
 
       if !@package
+        head(:unprocessable_entity)
+      end
+
+    end
+
+    def set_current_user
+      @current_user = User.find_by_authentication_token(request.headers['Authorization'])
+      if !@current_user
         head(:unprocessable_entity)
       end
 
