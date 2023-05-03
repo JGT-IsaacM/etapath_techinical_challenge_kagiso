@@ -66,8 +66,7 @@ class Api::V1::PackagesController < ApplicationController
     #  format.html { redirect_to packages_url, notice: "Package was successfully destroyed." }
     #  format.json { head :no_content }
     #end
-
-    if @package.distroy
+    if @package.destroy
       render json: @package
     else
       render json: @package.errors
