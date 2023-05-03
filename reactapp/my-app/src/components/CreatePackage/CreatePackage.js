@@ -142,7 +142,9 @@ export default class CreatePackage extends React.Component{
                     value = {this.state.reference}
                 />
             </label>
-            <button type="submit">Save Package</button>
+            <div>
+                <button type="submit">Save Package</button>
+            </div>
             <CancelButton />
         </form>
       </div>
