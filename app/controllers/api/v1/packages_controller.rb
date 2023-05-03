@@ -66,7 +66,8 @@ class Api::V1::PackagesController < ApplicationController
     #  format.html { redirect_to packages_url, notice: "Package was successfully destroyed." }
     #  format.json { head :no_content }
     #end
-    if @package.destroy
+
+    if @package.distroy
       render json: @package
     else
       render json: @package.errors
@@ -79,27 +80,14 @@ class Api::V1::PackagesController < ApplicationController
     def set_package
       @package = Package.find(params[:id])
 
-      if @package
-        render json: @package
-      else
-        render json: @package.errors
+      if !@package
+        head(:unprocessable_entity)
       end
 
     end
 
-    #def authenticate_api_v1_user
-    #  @user = User.find_by_email(params[:email]);
-
-    #  if @package
-    #    render json: @package
-    #  else
-    #    render json: @package.errors
-    #  end
-
-    #end
-
     # Only allow a list of trusted parameters through.
     def package_params
-      params.require(:package).permit(:reference_number, :location, :destination, :date, :timeslot, :user_id)
+      params.require(:package).permit(:reference_number, :location, :destination, :date, :timeslot, :user_id, :id)
     end
 end
