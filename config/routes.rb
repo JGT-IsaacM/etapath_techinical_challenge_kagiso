@@ -10,6 +10,8 @@ Rails.application.routes.draw do
       delete '/profile', to: "users#destroy"
 
       post '/sessions', to: 'sessions#create'
+      delete '/sessions', to: 'sessions#destroy'
+
       post '/packages', to: "packages#create"
       put '/packages', to: 'packages#update'
     end
