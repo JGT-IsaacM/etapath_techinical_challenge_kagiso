@@ -17,28 +17,22 @@ export default class Home extends React.Component{
   {
     // get all user's packages
     this.getPackages();
-
   }
 
   getPackages = async()=> {
-    await axios.get('http://localhost:3000/api/v1/packages')
-    .then(response =>{
-        console.log(response.data);
-        const packages = response.data
-        this.setState({packages});
+    try {
+      const response = await axios.get('http://localhost:3000/api/v1/packages',{
+        headers: {
+          'Authorization': `${this.props.token}`
+        }
+      });
+      const packages = response.data;
+      this.setState({packages});
 
-    })
-    .catch(error =>{
-        console.log("error getting packages");
-        console.log(error.message);
-    })
-
-
-  }
-
-  goToCreatePackages()
-  {
-
+    } catch (error) {
+      alert("Sorry, something went wrong on our side. Please reload page.");
+      console.log(error.message);
+    }
   }
 
   render()
@@ -51,22 +45,29 @@ export default class Home extends React.Component{
                 Create Package
             </button>
         </Link>
+        <Link to='/logout'>
+          <button type="button">
+              Logout 
+          </button>
+        </Link>
         <div>
             <ul>
                 {
-                    [1,2,3,4].map((item, index)=>{
-                        return(
-                        <Package
-                            key = {index}
-                            location_name = {"mazowe"}
-                            destination_name = {"mazowe"}
-                            distance = {1000}
-                            timeslot = {"13:15"}
-                            date = {"2021-06-01"}
-                            reference = {"18787382"}
-                        />
-                        )
-                    })
+                  this.state.packages.map((item, index)=>{
+                    return(
+                    <Package
+                        key = {index}
+                        id = {item.id || ''}
+                        token = {this.props.token}
+                        location_name = {item.location || ''}
+                        destination_name = {item.destination || ''}
+                        distance = {item.distance || ''}
+                        timeslot = {item.timeslot? item.timeslot.split('T')[1].slice(0,8):''}
+                        date = {item.date? item.date.slice(0, 10):''}
+                        reference = {item.reference_number || ''}
+                    />
+                    )
+                  })
                 }
             </ul>
         </div>
